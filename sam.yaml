@@ -1,0 +1,30 @@
+Transform: AWS::Serverless-2016-10-31
+Description: demo
+
+# Parameters:
+#   BaseURL: 
+#     Type: String
+#     Default: ""
+
+Resources:
+  Func:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: apig-binary-demo
+      Handler: index.handler
+      CodeUri: ./func.d
+      Runtime: nodejs8.10
+      MemorySize: 512
+      Timeout: 60
+      # Environment:
+      #   Variables:
+      #     BASEURL: !Ref BaseURL
+      Events:
+        HttpEvent:
+          Type: Api
+          Properties:
+            Path: '/{proxy+}'
+            Method: any
+Outputs:
+    URL:
+      Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com.cn/Prod/whatever-uri"
